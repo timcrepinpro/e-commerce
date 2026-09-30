@@ -1,0 +1,39 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.cache/
+###< phpunit/phpunit ###
+
+###> symfony/asset-mapper ###
+/public/assets/
+/assets/vendor/
+###< symfony/asset-mapper ###
+
+###> ide / os ###
+/.idea/
+/.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+###< ide / os ###
+
+###> claude code ###
+/.claude/settings.local.json
+###< claude code ###
+
+###> composer / outils ###
+/composer.phar
+/.php-cs-fixer.cache
+/.phpunit.result.cache
+###< composer / outils ###
