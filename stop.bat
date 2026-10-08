@@ -6,5 +6,5 @@ set "PATH=%USERPROFILE%\scoop\shims;%PATH%"
 echo Arret du serveur Symfony...
 call symfony server:stop
 echo.
-echo (MySQL n'est pas arrete : il peut servir a d'autres projets. Arrete-le depuis XAMPP si besoin.)
+echo (MySQL et Apache ne sont pas arretes : ils peuvent servir a d autres projets. Arrete-les depuis XAMPP si besoin.)
 timeout /t 3 >nul

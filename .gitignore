@@ -31,7 +31,7 @@ desktop.ini
 ###> claude code ###
 /.claude/settings.local.json
 ###< claude code ###
-
+/.claude/
 ###> composer / outils ###
 /composer.phar
 /.php-cs-fixer.cache
