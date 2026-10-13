@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit{% endblock %}
+
+{% block body %}
+<div class="container">
+    <br>
+    <h1>Produit</h1>
+    <br>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ product.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ product.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ product.description }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ product.price }} €</td>
+            </tr>
+            <tr>
+                <th>Sous-catégories</th>
+                <td>
+                    {% for subCategory in product.subCategories %}
+                        <span class="badge text-bg-secondary">{{ subCategory.name }}</span>
+                    {% else %}
+                        Aucune
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-primary" href="{{ path('app_product_edit', {'id': product.id}) }}">Modifier</a>
+    <br><br>
+    {{ include('product/_delete_form.html.twig') }}
+    <br>
+    <a class="btn btn-dark" href="{{ path('app_product_index') }}">Retour</a>
+</div>
+{% endblock %}

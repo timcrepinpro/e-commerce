@@ -1,0 +1,20 @@
+{{ form_start(form) }}
+
+    <label for="">Nom du produit : </label>
+    {{ form_widget(form.name,{'attr':{'class':'form form-control','placeholder':"nom"}}) }}
+    {{ form_errors(form.name) }}
+    <br>
+    <label for="">Description : </label>
+    {{ form_widget(form.description,{'attr':{'class':'form form-control','placeholder':"description"}}) }}
+    {{ form_errors(form.description) }}
+    <br>
+    <label for="">Prix : </label>
+    {{ form_widget(form.price,{'attr':{'class':'form form-control','placeholder':"prix"}}) }}
+    {{ form_errors(form.price) }}
+    <br>
+    <label for="">Sous-catégories : </label>
+    {{ form_widget(form.subCategories,{'attr':{'class':'form form-control'}}) }}
+    {{ form_errors(form.subCategories) }}
+    <br>
+    <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}

@@ -7,8 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[UniqueEntity(
+    fields: ['name'],
+    message: 'Ce nom de produit existe déjà',
+    errorPath: 'name',
+)]
 class Product
 {
     #[ORM\Id]
@@ -26,9 +32,9 @@ class Product
     private ?string $price = null;
 
     /**
-     * @var Collection<int, subCategory>
+     * @var Collection<int, SubCategory>
      */
-    #[ORM\ManyToMany(targetEntity: subCategory::class, inversedBy: 'products')]
+    #[ORM\ManyToMany(targetEntity: SubCategory::class, inversedBy: 'products')]
     private Collection $subCategories;
 
     public function __construct()
@@ -78,14 +84,14 @@ class Product
     }
 
     /**
-     * @return Collection<int, subCategory>
+     * @return Collection<int, SubCategory>
      */
     public function getSubCategories(): Collection
     {
         return $this->subCategories;
     }
 
-    public function addSubCategory(subCategory $subCategory): static
+    public function addSubCategory(SubCategory $subCategory): static
     {
         if (!$this->subCategories->contains($subCategory)) {
             $this->subCategories->add($subCategory);
@@ -94,7 +100,7 @@ class Product
         return $this;
     }
 
-    public function removeSubCategory(subCategory $subCategory): static
+    public function removeSubCategory(SubCategory $subCategory): static
     {
         $this->subCategories->removeElement($subCategory);
 
