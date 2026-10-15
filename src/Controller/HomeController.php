@@ -7,22 +7,46 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\ProductRepository;
 use App\Entity\Product;
+use App\Repository\CategoryRepository;
+use App\Repository\SubCategoryRepository;
 
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home',  methods: ['GET'])]
-    public function index(ProductRepository $productRepository): Response
+    public function index(ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
     {
-        return $this->render('home/index.html.twig', ['products' => $productRepository->findBy([],['name'=>"ASC"])]);
+        return $this->render('home/index.html.twig', [
+            'products' => $productRepository->findBy([],['name'=>"ASC"]),
+            'categories' => $categoryRepository->findAll(),
+        ]);
     }
-    #[Route('/home/product/{id}/show', name: 'app_home_product_show',  methods: ['GET'])]
-    public function show(Product $product, ProductRepository $productRepository): Response
-    {
-            $lastProducts = $productRepository->findBy([],['id'=>'DESC'],limit: 5);
 
-            return $this->render('home/show.html.twig', [
-                'product' => $product,
-                'products' => $lastProducts
-            ]);
+    #[Route('/home/product/{id}/show', name: 'app_home_product_show',  methods: ['GET'])]
+    public function show($id, Product $product, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
+    {
+        $lastProducts = $productRepository->findBy([],['id'=>'DESC'],limit: 5);
+
+        return $this->render('home/show.html.twig', [
+            'product' => $product,
+            'products' => $lastProducts,
+            'categories' => $categoryRepository->findAll(),
+        ]);
+    }
+    #[Route('/home/product/subcategory/{id}/filter', name: 'app_home_product_filter',  methods: ['GET'])]
+    public function filter($id, CategoryRepository $categoryRepository, SubCategoryRepository $subCategoryRepository): Response
+    {
+        $subCategory = $subCategoryRepository->find($id);
+        if (!$subCategory) {
+            throw $this->createNotFoundException('Sous-catégorie introuvable');
+        }
+        $products = $subCategory->getProducts();
+        $category = $subCategory->getCategory();
+
+        return $this->render('home/filter.html.twig', [
+            'products' => $products,
+            'categories' => $categoryRepository->findAll(),
+            'category' => $category,
+            'subCategory' => $subCategory,
+        ]);
     }
 }
