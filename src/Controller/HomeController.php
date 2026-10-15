@@ -9,16 +9,25 @@ use App\Repository\ProductRepository;
 use App\Entity\Product;
 use App\Repository\CategoryRepository;
 use App\Repository\SubCategoryRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Knp\Component\Pager\PaginatorInterface;
 
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home',  methods: ['GET'])]
-    public function index(ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
+    public function index(ProductRepository $productRepository, CategoryRepository $categoryRepository, Request $request, PaginatorInterface $paginator ): Response
     {
-        return $this->render('home/index.html.twig', [
-            'products' => $productRepository->findBy([],['name'=>"ASC"]),
-            'categories' => $categoryRepository->findAll(),
-        ]);
+            $data =  $productRepository->findBy([],['name'=>"ASC"]);
+            $products = $paginator->paginate(
+                $data,
+                $request->query->getInt('page', 1), /* page number */
+                12 /* limit per page */
+            );
+
+            return $this->render('home/index.html.twig', [
+                'products' => $products,
+                'categories' => $categoryRepository->findAll(),
+            ]);
     }
 
     #[Route('/home/product/{id}/show', name: 'app_home_product_show',  methods: ['GET'])]
@@ -33,13 +42,17 @@ final class HomeController extends AbstractController
         ]);
     }
     #[Route('/home/product/subcategory/{id}/filter', name: 'app_home_product_filter',  methods: ['GET'])]
-    public function filter($id, CategoryRepository $categoryRepository, SubCategoryRepository $subCategoryRepository): Response
+    public function filter($id, CategoryRepository $categoryRepository, SubCategoryRepository $subCategoryRepository, Request $request, PaginatorInterface $paginator): Response
     {
         $subCategory = $subCategoryRepository->find($id);
         if (!$subCategory) {
             throw $this->createNotFoundException('Sous-catégorie introuvable');
         }
-        $products = $subCategory->getProducts();
+        $products = $paginator->paginate(
+            $subCategory->getProducts(),
+            $request->query->getInt('page', 1), /* page number */
+            12 /* limit per page */
+        );
         $category = $subCategory->getCategory();
 
         return $this->render('home/filter.html.twig', [
