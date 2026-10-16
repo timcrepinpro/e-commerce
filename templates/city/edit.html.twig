@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification ville{% endblock %}
+
+{% block body %}
+<div class="container">
+    <br>
+    <h1>Modifier une ville</h1>
+    <br>
+    {{ include('city/_form.html.twig', {'button_label': 'Modifier'}) }}
+    <br>
+    {{ include('city/_delete_form.html.twig') }}
+    <br>
+    <a class="btn btn-dark" href="{{ path('app_city_index') }}">Retour</a>
+</div>
+{% endblock %}

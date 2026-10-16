@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des villes{% endblock %}
+
+{% block body %}
+<div class="container">
+    <br>
+    <h1>Villes et frais de port</h1>
+    <br>
+    {% include 'layouts/_flash_message.html.twig' %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Ville</th>
+                <th>Code postal</th>
+                <th>Frais de port</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for city in cities %}
+            <tr>
+                <td>{{ city.id }}</td>
+                <td>{{ city.name }}</td>
+                <td>{{ city.zipCode }}</td>
+                <td>{{ city.shippingCost }} €</td>
+                <td>
+                    <a class="btn btn-outline-primary" href="{{ path('app_city_show', {'id': city.id}) }}">Afficher</a>
+                    <a class="btn btn-outline-secondary" href="{{ path('app_city_edit', {'id': city.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucune ville à afficher</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-outline-success" href="{{ path('app_city_new') }}">Nouvelle ville</a>
+</div>
+{% endblock %}

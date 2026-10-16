@@ -1,0 +1,15 @@
+{{ form_start(form) }}
+    <label for="">Nom de la ville : </label>
+    {{ form_widget(form.name, {'attr': {'class': 'form form-control', 'placeholder': "ville"}}) }}
+    {{ form_errors(form.name) }}
+    <br>
+    <label for="">Code postal : </label>
+    {{ form_widget(form.zipCode, {'attr': {'class': 'form form-control', 'placeholder': "code postal"}}) }}
+    {{ form_errors(form.zipCode) }}
+    <br>
+    <label for="">Frais de port (€) : </label>
+    {{ form_widget(form.shippingCost, {'attr': {'class': 'form form-control', 'placeholder': "frais de port"}}) }}
+    {{ form_errors(form.shippingCost) }}
+    <br>
+    <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}

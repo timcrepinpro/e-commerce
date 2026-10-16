@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande{% endblock %}
+
+{% block body %}
+   <div class="container">
+        <br>
+        <h1>Commande</h1>
+        <br>
+        <div class="col-4">
+            <h4>Montant total : {{ total|number_format(2, '.', ',') }} €</h4>
+        </div>
+        {{ include('order/_form.html.twig') }}
+        <br>
+        <a class="btn btn-dark" href="{{ path('app_cart') }}">Retour</a>
+    </div>
+{% endblock %}
