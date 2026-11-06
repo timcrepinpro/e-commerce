@@ -7,6 +7,7 @@ use App\Entity\Order;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,6 +20,7 @@ class OrderType extends AbstractType
             ->add('firstName')
             ->add('lastName')
             ->add('phoneNumber')
+            ->add('email', EmailType::class)
             ->add('adress')
             //->add('createdAt', null, [
             //    'widget' => 'single_text',

@@ -72,13 +72,16 @@
             <h5>Frais de port : {{ order.shippingPrice }} €</h5>
             <h5>Total à payer : {{ order.totalPrice }} €</h5>
             <br>
+
             {% if order.isDelivered != true %}
-                <a class="btn btn-outline-primary"
-                href="{{ path('app_order_is_delivered_update', {'id': order.id}) }}">
-                Marquer comme livrée</a>
+            <a class="btn btn-outline-primary" href="{{ path('app_order_is_delivered_update', {'id': order.id}) }}" >Marquer comme livrée</a>
             {% endif %}
+
+            <a class="btn btn-outline-success" href="{{ path('app_bill', {'id': order.id}) }}" target="_blank">Imprimer facture</a>
+
             <br>
             <br>
+            {{ include('order/_delete_form.html.twig') }}
             <hr>
             {% else %}
                         <h2>Aucune commande à afficher</h2>

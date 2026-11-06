@@ -16,11 +16,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+
 
 
 
 final class OrderController extends AbstractController
 {
+    public function __construct(private MailerInterface $mailer){}
+
     #[Route('/order', name: 'app_order')]
     public function index(Request $request, CategoryRepository $categoryRepository,
     ProductRepository $productRepository, SessionInterface $session,
@@ -72,11 +78,29 @@ final class OrderController extends AbstractController
                             $orderProduct->setQte($quantity);
                             $orderProduct->setPrice($product->getPrice());
 
+                            //Ajout de la liste des produits à la variable $order
+                            $order->addOrderProduct($orderProduct);
+
                             $entityManager->persist($orderProduct);
                             $entityManager->flush();
                         }
                 }
             $session->remove('cart'); //On vide le panier
+
+            //Envoi d'un mail de confirmation
+            $html = $this->renderView('mail/orderConfirm.html.twig',[
+                'order'=>$order
+            ]);
+
+            $email = (new Email())
+                ->from('sio-shoes@edouardgand.fr')
+                ->to($order->getEmail())
+                ->subject('Confirmation de commande Sio-Shoes')
+                ->html($html);
+
+            $this->mailer->send($email);
+
+            //Message final
             return $this->redirectToRoute('order_message', [], Response::HTTP_SEE_OTHER);
             }
             else
@@ -136,8 +160,16 @@ final class OrderController extends AbstractController
         return $this->redirectToRoute('app_orders', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/editor/order/{id}/delete', name: 'app_order_delete', methods: ['POST'])]
+    public function delete(Request $request, Order $order, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$order->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($order);
+            $entityManager->flush();
 
+            $this->addFlash('danger', 'La commande a été supprimée.');
+        }
 
-
-
+        return $this->redirectToRoute('app_orders', [], Response::HTTP_SEE_OTHER);
+    }
 }

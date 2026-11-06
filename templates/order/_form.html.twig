@@ -11,6 +11,10 @@
     {{ form_widget(form.phoneNumber, {'attr': {'class': 'form form-control'}}) }}
     {{ form_errors(form.phoneNumber) }}
     <br>
+    <label for="">E-mail : </label>
+    {{ form_widget(form.email, {'attr': {'class': 'form form-control', 'placeholder': 'exemple@mail.fr'}}) }}
+    {{ form_errors(form.email) }}
+    <br>
     <label for="">Adresse : </label>
     {{ form_widget(form.adress, {'attr': {'class': 'form form-control'}}) }}
     {{ form_errors(form.adress) }}

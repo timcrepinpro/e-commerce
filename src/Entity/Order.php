@@ -50,11 +50,16 @@ class Order
     /**
      * @var Collection<int, OrderProducts>
      */
-    #[ORM\OneToMany(targetEntity: OrderProducts::class, mappedBy: '_order')]
+    #[ORM\OneToMany(targetEntity: OrderProducts::class, mappedBy: '_order', orphanRemoval: true)]
     private Collection $orderProducts;
 
     #[ORM\Column(nullable: true)]
     private ?bool $isDelivered = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(message: "L'adresse e-mail est obligatoire")]
+    #[Assert\Email(message: "L'adresse e-mail n'est pas valide")]
+    private ?string $email = null;
 
     public function __construct()
     {
@@ -199,6 +204,18 @@ class Order
     public function setIsDelivered(?bool $isDelivered): static
     {
         $this->isDelivered = $isDelivered;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
 
         return $this;
     }
